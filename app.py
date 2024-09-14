@@ -4,30 +4,25 @@ from werkzeug.utils import secure_filename
 import PyPDF2
 import openai
 
-# Initialize Flask App
-app = Flask(__name__)
 
-# Set the upload folder and allowed extensions
+app = Flask(__name__)
 UPLOAD_FOLDER = './uploads/'
 ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Check if the uploaded file is a PDF
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Home route
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    # Ensure that uploads directory exists
+   
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
 
-    # Ensure both the API key and the file are provided
     if 'file' not in request.files:
         return 'No file part in the request', 400
     if 'api_key' not in request.form or request.form['api_key'] == '':
@@ -39,27 +34,20 @@ def upload_file():
     if file.filename == '':
         return 'No file selected for uploading', 400
 
-    # Save the uploaded file
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
     file.save(file_path)
-    
-    # Extract text from the uploaded PDF
+ 
     extracted_text = extract_text_from_pdf(file_path)
 
-    # Check if the job description checkbox is ticked and retrieve the job description
     include_job_description = 'add_job_description' in request.form
     job_description = request.form['job_description'] if include_job_description else None
-    
-    # Generate HTML resume using OpenAI API, passing job description if applicable
+   
     html_content = generate_html_resume(extracted_text, api_key, job_description)
     
-    # Save the generated HTML to a file
     html_path = save_html_resume(html_content, file.filename)
     
     return send_file(html_path, as_attachment=True)
 
-
-# Function to extract text from a PDF
 def extract_text_from_pdf(file_path):
     text = ""
     try:
@@ -71,12 +59,9 @@ def extract_text_from_pdf(file_path):
         print(f"Error extracting text from PDF: {e}")
     return text
 
-
-# Function to generate HTML resume using OpenAI with provided API key
 def generate_html_resume(extracted_text, api_key, job_description=None):
     openai.api_key = api_key
 
-    # Define the prompt for structured ATS-friendly resume generation
     prompt = f"""
     Convert the following extracted LinkedIn resume details into an HTML format, and make sure it is ATS (Applicant Tracking System) friendly.
 
@@ -249,7 +234,7 @@ def generate_html_resume(extracted_text, api_key, job_description=None):
         prompt += f"\n\nHere is the Job Description for the position candidate is applying to. Curate the resume for the specific job description so that the resume scores higher ATS score for better chances of selection:\n{job_description}"
     
     try:
-        # Call OpenAI API to generate the HTML resume using gpt-3.5-turbo or gpt-4
+       
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
@@ -267,7 +252,6 @@ def generate_html_resume(extracted_text, api_key, job_description=None):
 
 
 
-# Function to save the generated HTML to a file
 def save_html_resume(html_content, original_filename):
     base_filename = os.path.splitext(original_filename)[0]
     html_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{base_filename}_resume.html")
@@ -276,6 +260,5 @@ def save_html_resume(html_content, original_filename):
     return html_path
 
 
-# Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)

@@ -108,4 +108,4 @@ The application is also deployed on vercel. [Click Here](https://linkedin-resume
 
 [Link to resume](./resources/siddhesh_linkedin_resume.html)
 
-### Note: The outputs were generated using Llama's API key because the OpenAI API Key was not available at the time of project creation.
+### Note: The outputs demonstrated in this project were generated using Llama's API key due to the unavailability of the OpenAI API key at the time of development. While this demonstrates the functionality, the final version of the application, once implemented with the OpenAI API key, is expected to produce outputs of higher quality and accuracy. This demonstration serves to illustrate the application's capabilities, and the final implementation will ensure optimal performance.
