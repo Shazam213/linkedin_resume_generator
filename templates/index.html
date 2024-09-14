@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Quick styles for hidden elements and tooltips */
+        .hidden { display: none; }
+        .tooltip {
+            font-size: 0.85em;
+            color: #666;
+            margin-left: 5px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Your Tailored Resume</h1>
+        <form id="resume-form" action="/upload" method="POST" enctype="multipart/form-data">
+            <!-- API Key Input -->
+            <div class="input-group">
+                <label for="api_key">OpenAI API Key:</label>
+                <input type="password" id="api_key" name="api_key" required placeholder="Enter API Key">
+                <span class="tooltip" id="api-tooltip">Your API key will remain secure and private.</span>
+            </div>
+            
+            <!-- File Upload Input -->
+            <div class="input-group">
+                <label for="file">Upload LinkedIn PDF:</label>
+                <input type="file" id="file" name="file" accept="application/pdf" required>
+                <span class="tooltip" id="file-tooltip">Upload a PDF version of your LinkedIn profile.</span>
+            </div>
+            
+            <!-- Checkbox to Add Job Description -->
+            <div class="input-group">
+                <input type="checkbox" id="add_job_description" name="add_job_description">
+                <label for="add_job_description">Include Job Description</label>
+            </div>
+
+            <!-- Hidden Job Description Text Area -->
+            <div id="job_description_container" class="input-group hidden">
+                <label for="job_description">Enter Job Description:</label>
+                <textarea id="job_description" name="job_description" rows="5" placeholder="Paste the job description here..."></textarea>
+            </div>
+
+            <!-- Submit Button and Loading Spinner -->
+            <div class="input-group">
+                <button type="submit" id="submit-btn">Generate Resume</button>
+            </div>
+            <div id="loading-spinner" class="spinner hidden"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('add_job_description').addEventListener('change', function() {
+            const jobDescriptionContainer = document.getElementById('job_description_container');
+            if (this.checked) {
+                jobDescriptionContainer.classList.remove('hidden');
+            } else {
+                jobDescriptionContainer.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('resume-form').addEventListener('submit', function() {
+            const submitButton = document.getElementById('submit-btn');
+            const spinner = document.getElementById('loading-spinner');
+
+            submitButton.disabled = true; // Disable button to prevent multiple submissions
+            spinner.classList.remove('hidden'); // Show spinner when form is submitted
+
+            // Optional: Add form validation or dynamic error handling here
+        });
+    </script>
+</body>
+</html>
