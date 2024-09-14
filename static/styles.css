@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f0f8ff;
+    background-color: #0077B5;
     text-align: center;
     padding: 50px;
 }
@@ -10,7 +10,7 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    max-width: 500px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
