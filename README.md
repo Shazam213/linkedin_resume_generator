@@ -14,6 +14,8 @@ The **LinkedIn Resume Generator** is a web application designed to streamline th
 
 4. **Custom Job Description Feature**: An **additional feature** allows users to input a job description. The resume is then tailored to match the job requirements, increasing its relevance and improving the chances of landing an interview.
 
+5. **Prompt Engineering:** The application employs advanced prompt engineering to optimize the interaction with the GPT-4 model. This ensures that the generated resume is not only well-structured and professional but also effectively aligns with the specific needs and standards of top companies.
+
 ## Approach and Steps
 
 ### 1. **Project Setup**
