@@ -78,7 +78,7 @@ The **LinkedIn Resume Generator** is a web application designed to streamline th
     ```bash
     flask run
     ```
-#### The application is also deployed on vercel. [Click Here](https://linkedin-resume-generator-r2665ecwr-shazam213s-projects.vercel.app)
+#### The application is also deployed on vercel. [Click Here](https://linkedin-resume-generator-q0bu0kdra-shazam213s-projects.vercel.app)
 ### 6. **Implementation**
 1. **Home Screen**:
 ![Home screen](./resources/Screenshot%20from%202024-09-14%2023-32-17.png)
