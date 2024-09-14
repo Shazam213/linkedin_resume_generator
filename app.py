@@ -242,6 +242,7 @@ def generate_html_resume(extracted_text, api_key, job_description=None):
     Using this format, generate an HTML resume from the following extracted text. Ensure that the HTML is clean, readable, and ATS-compliant. Adjust or omit irrelevant sections if needed to fit the professional resume format:
 
     {extracted_text}
+    Note: directly give the output html code and no description for it.
     """
 
     if job_description:
