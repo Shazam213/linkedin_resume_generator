@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 import PyPDF2
 import openai
+import io
 
 
 app = Flask(__name__)
@@ -19,10 +20,7 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-   
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-
+    # Ensure both the API key and the file are provided
     if 'file' not in request.files:
         return 'No file part in the request', 400
     if 'api_key' not in request.form or request.form['api_key'] == '':
@@ -34,30 +32,39 @@ def upload_file():
     if file.filename == '':
         return 'No file selected for uploading', 400
 
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-    file.save(file_path)
- 
-    extracted_text = extract_text_from_pdf(file_path)
+    # Save the uploaded file in memory
+    file_in_memory = io.BytesIO(file.read())
+    
+    # Extract text from the uploaded PDF
+    extracted_text = extract_text_from_pdf(file_in_memory)
 
+    # Check if the job description checkbox is ticked and retrieve the job description
     include_job_description = 'add_job_description' in request.form
     job_description = request.form['job_description'] if include_job_description else None
-   
+    
+    # Generate HTML resume using OpenAI API, passing job description if applicable
     html_content = generate_html_resume(extracted_text, api_key, job_description)
     
-    html_path = save_html_resume(html_content, file.filename)
+    # Convert HTML content to in-memory file-like object
+    html_in_memory = io.BytesIO()
+    html_in_memory.write(html_content.encode('utf-8'))
+    html_in_memory.seek(0)
     
-    return send_file(html_path, as_attachment=True)
+    # Send the HTML file as an attachment
+    return send_file(html_in_memory, as_attachment=True, download_name='resume.html', mimetype='text/html')
 
-def extract_text_from_pdf(file_path):
+
+def extract_text_from_pdf(file_in_memory):
     text = ""
     try:
-        with open(file_path, "rb") as file:
-            pdf = PyPDF2.PdfReader(file)
-            for page in pdf.pages:
-                text += page.extract_text() or ""
+        # Use the in-memory file instead of a path
+        pdf = PyPDF2.PdfReader(file_in_memory)
+        for page in pdf.pages:
+            text += page.extract_text() or ""
     except Exception as e:
         print(f"Error extracting text from PDF: {e}")
     return text
+
 
 def generate_html_resume(extracted_text, api_key, job_description=None):
     openai.api_key = api_key
