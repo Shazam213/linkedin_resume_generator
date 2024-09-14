@@ -77,23 +77,35 @@ The **LinkedIn Resume Generator** is a web application designed to streamline th
     flask run
     ```
 The application is also deployed on vercel. [Click Here](https://linkedin-resume-generator-7d5pu04yi-shazam213s-projects.vercel.app/)
-### 6. **Features**
+### 6. **Implementation**
 1. **Home Screen**:
 ![Home screen](./resources/Screenshot%20from%202024-09-14%2021-15-45.png)
+
 2. **Examples:**
 - First PDF:
+
 ![soham_pdf](./resources/Screenshot%20from%202024-09-14%2021-18-53.png)
+
 [Link to pdf](./resources/soham_linkedin.pdf)
+
 - Generated Resume:
+
 ![soham](./resources/Screenshot%20from%202024-09-14%2021-18-28.png)
+
 [Link to resume](./resources/soham_linkedin_resume.html)
 
 - Second PDF:
+
 ![siddhesh_pdf](./resources/Screenshot%20from%202024-09-14%2021-19-12.png)
+
 ![siddhesh_pdf2](./resources/Screenshot%20from%202024-09-14%2021-19-19.png)
+
 [Link to pdf](./resources/siddhesh_linkedin.pdf)
+
 - Generated Resume:
+
 ![soham](./resources/Screenshot%20from%202024-09-14%2021-19-28.png)
+
 [Link to resume](./resources/siddhesh_linkedin_resume.html)
 
-#### Note: The outputs were generated using Llama's API key because the OpenAI API Key was not available at the time of project creation.
+### Note: The outputs were generated using Llama's API key because the OpenAI API Key was not available at the time of project creation.
